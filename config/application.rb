@@ -22,6 +22,8 @@ module Creators
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
+    config.active_job.queue_adapter = :sidekiq
+    config.read_encrypted_secrets = true
 
     # Configuration for the application, engines, and railties goes here.
     #
