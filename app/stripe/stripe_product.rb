@@ -9,7 +9,7 @@ class StripeProduct
   def create_product
     return if product.stripe_id.present?
 
-    currency_options = params[:currency_options].each_with_object({}) do |option, acc|
+    currency_options = params.fetch(:currency_options, []).each_with_object({}) do |option, acc|
       acc[option[:currency]] = {
         unit_amount: option[:amount]
       }
