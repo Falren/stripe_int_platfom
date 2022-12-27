@@ -22,7 +22,7 @@ class StripeAccount
     amount = payments_balances.available.first.amount
     @payout ||= Stripe::Payout.create(
       {
-        amount: amount,
+        amount: amount, 
         currency: 'usd',
         destination: account.external_account_id
       }, header

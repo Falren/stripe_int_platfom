@@ -8,6 +8,10 @@ module ApplicationHelper
       {
         name: 'Accounts',
         path: accounts_path
+      },
+      {
+        name: 'Products',
+        path: products_path
       }
     ].map do |item|
       {
