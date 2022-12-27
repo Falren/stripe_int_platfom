@@ -27,6 +27,14 @@
         <dt class="text-sm font-medium text-gray-500">Payouts enabled?</dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= current_user.account.payouts_enabled? %></dd>
       </div>
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">Financial Account ID</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= current_user.account.financial_account_id %></dd>
+      </div>
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">External Account ID</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= current_user.account.external_account_id %></dd>
+      </div>
     </dl>
   </div>
 </div>

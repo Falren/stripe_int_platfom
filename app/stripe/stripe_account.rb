@@ -1,5 +1,7 @@
 class StripeAccount
   include Rails.application.routes.url_helpers
+  attr_reader :account
+
   def initialize(account)
     @account = account
   end
@@ -9,21 +11,21 @@ class StripeAccount
   end
 
   def create_account
-    return if @account.stripe_id.present?
+    return if account.stripe_id.present?
 
     stripe_account = Stripe::Account.create(
       type: 'custom',
       country: 'US',
-      email: @account.user.email,
+      email: account.user.email,
       business_type: 'individual',
       individual: {
-        email: @account.user.email
+        email: account.user.email
       },
       business_profile: {
         product_description: 'Digital creation',
         mcc: '5818',
-        email: @account.user.email,
-        url: 'https://me.maybe.example.dev'
+        support_email: account.user.email,
+        url: 'https://example.dev'
       },
       capabilities: {
         card_payments: {
@@ -36,13 +38,76 @@ class StripeAccount
         # Requested capabilities
         treasury: {
           requested: true
-        },
-        card_issuing: {
-          requested: true
         }
+        # not working
+        # card_issuing: {
+        #   requested: true
+        # }
       }
     )
     @account.update(stripe_id: stripe_account.id)
+  end
+
+  def ensure_external_account
+    return unless account.external_account_id.nil?
+
+    account_info = financial_account.financial_addresses.first.aba
+
+    bank_account = Stripe::Account.create_external_account(
+      account.stripe_id,
+      {
+        external_account: {
+          object: 'bank_account',
+          account_number: account_info.account_number,
+          routing_number: account_info.routing_number,
+          country: 'US',
+          currency: 'usd'
+        },
+        default_for_currency: true
+      }
+    )
+    account.update(external_account_id: bank_account.id)
+  end
+
+  def financial_account
+    return @financial_account if defined? @financial_account
+
+    @financial_account ||= Stripe::Treasury::FinancialAccount.retrieve(
+      {
+        id: account.financial_account_id,
+        expand: ['financial_addresses.aba.account_number']
+      }, header
+    )
+  end
+
+  def ensure_financial_account
+    return unless account.financial_account_id.nil?
+
+    financial_account = Stripe::Treasury::FinancialAccount.create(
+      {
+        supported_currencies: ['usd'],
+        features: {
+          # card_issuing: { requested: true },
+          deposit_insurance: { requested: true },
+          financial_addresses: { aba: { requested: true } },
+          inbound_transfers: { ach: { requested: true } },
+          intra_stripe_flows: { requested: true },
+          outbound_payments: {
+            ach: { requested: true },
+            us_domestic_wire: { requested: true }
+          },
+          outbound_transfers: {
+            ach: { requested: true },
+            us_domestic_wire: { requested: true }
+          }
+        }
+      }, header
+    )
+    @account.update(financial_account_id: financial_account.id)
+  end
+
+  def header
+    { stripe_account: @account.stripe_id }
   end
 
   def onboarding_url
