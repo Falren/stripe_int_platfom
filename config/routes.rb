@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   post '/webhooks/:source', to: 'webhooks#create'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :accounts
+  resources :payouts, only: %i[create]
   resource :dashboard
   # Defines the root path route ("/")
   # root "articles#index"

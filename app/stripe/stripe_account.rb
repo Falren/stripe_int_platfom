@@ -18,6 +18,17 @@ class StripeAccount
     @payments_balances ||= Stripe::Balance.retrieve(header)
   end
 
+  def payout
+    amount = payments_balances.available.first.amount
+    @payout ||= Stripe::Payout.create(
+      {
+        amount: amount,
+        currency: 'usd',
+        destination: account.external_account_id
+      }, header
+    )
+  end
+
   def create_account
     return if account.stripe_id.present?
 
