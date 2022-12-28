@@ -6,8 +6,13 @@ class Product < ApplicationRecord
   end
 
   def price
-    return if data.blank?
+    return if product_data.blank?
 
-    Stripe::Product.construct_from(JSON.parse(data)).default_price.unit_amount
+    product_data.default_price.unit_amount.fdiv(100.0)
+  end
+
+  def product_data
+    return if data.blank?
+    Stripe::Product.construct_from(JSON.parse(data))
   end
 end
