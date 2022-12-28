@@ -24,6 +24,7 @@ module Creators
     config.load_defaults 7.1
     config.active_job.queue_adapter = :sidekiq
     config.read_encrypted_secrets = true
+    config.hosts = nil
 
     # Configuration for the application, engines, and railties goes here.
     #

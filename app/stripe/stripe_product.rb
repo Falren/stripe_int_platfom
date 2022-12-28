@@ -6,18 +6,24 @@ class StripeProduct
     @product = product
   end
 
-  def create_product
-    return if product.stripe_id.present?
-
-    currency_options = params.fetch(:currency_options, []).each_with_object({}) do |option, acc|
+  def currency_options
+    params.fetch(:currency_options, []).each_with_object({}) do |option, acc|
       acc[option[:currency]] = {
         unit_amount: option[:amount]
       }
     end
+  end
+
+  def create_product
+    return if product.stripe_id.present?
+
     stripe_product = Stripe::Product.create(
       {
         name: product.name,
         description: product.description,
+        images: [
+          product.photo.representation(:medium).processed.url
+        ],
         metadata: {
           user_id: product.user_id,
           product_id: product.id
