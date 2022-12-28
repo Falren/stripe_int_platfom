@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   constraints DomainConstraint do
     scope module: :stores do
       resources :products
+      resource :checkout, as: 'store_checkout'
       root to: 'products#index', as: 'store_root'
     end
   end

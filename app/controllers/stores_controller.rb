@@ -10,9 +10,12 @@ class StoresController < ApplicationController
 
   def update
     @store = current_user.store
-    return redirect_to store_path if @store.update(store_params)
+    return render :edit unless @store.update(store_params)
 
-    render :edit
+    service = StripeAccount.new(current_user.account)
+    service.update_account_branding
+
+    redirect_to store_path
   end
 
   private

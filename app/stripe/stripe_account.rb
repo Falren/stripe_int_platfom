@@ -18,11 +18,28 @@ class StripeAccount
     @payments_balances ||= Stripe::Balance.retrieve(header)
   end
 
+  def update_account_branding
+    store = account.store
+    return if [store.primary_color, store.secondary_color].include?(nil)
+
+    Stripe::Account.update(
+      account.stripe_id,
+      {
+        settings: {
+          branding: {
+            primary_color: store.primary_color,
+            secondary_color: store.secondary_color
+          }
+        }
+      }, header
+    )
+  end
+
   def payout
     amount = payments_balances.available.first.amount
     @payout ||= Stripe::Payout.create(
       {
-        amount: amount, 
+        amount: amount,
         currency: 'usd',
         destination: account.external_account_id
       }, header
