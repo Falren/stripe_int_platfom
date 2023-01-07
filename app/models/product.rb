@@ -1,5 +1,8 @@
 class Product < ApplicationRecord
   belongs_to :user
+  has_one :store, through: :user
+  has_many :customer_products
+  has_many :customers, through: :customer_products
   has_one_attached :photo do |photo|
     photo.variant :thumb, resize_to_limit: [100, 100]
     photo.variant :medium, resize_to_limit: [400, 400]
@@ -13,6 +16,7 @@ class Product < ApplicationRecord
 
   def product_data
     return if data.blank?
+
     Stripe::Product.construct_from(JSON.parse(data))
   end
 end

@@ -1,5 +1,7 @@
 require 'constraints/domain_constraint'
 Rails.application.routes.draw do
+  get 'customers/index'
+  get 'customers/show'
   get 'stores/index'
   get 'stores/show'
   devise_for :users
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   end
   root 'static_pages#root'
 
+  resources :customers
   resources :accounts
   resources :products
   resources :payouts, only: %i[create]
