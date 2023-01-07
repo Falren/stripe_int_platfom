@@ -1,5 +1,6 @@
 require 'constraints/domain_constraint'
 Rails.application.routes.draw do
+  get 'attachments/create'
   get 'customers/index'
   get 'customers/show'
   get 'stores/index'
@@ -19,7 +20,9 @@ Rails.application.routes.draw do
 
   resources :customers
   resources :accounts
-  resources :products
+  resources :products do 
+    resources :attachments, shallow: true
+  end
   resources :payouts, only: %i[create]
   resource :store
   resource :dashboard

@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   belongs_to :user
   has_one :store, through: :user
+  has_many :attachments
   has_many :customer_products
   has_many :customers, through: :customer_products
   has_one_attached :photo do |photo|
