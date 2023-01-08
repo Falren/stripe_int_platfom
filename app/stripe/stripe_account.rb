@@ -61,7 +61,7 @@ class StripeAccount
         product_description: 'Digital creation',
         mcc: '5818',
         support_email: account.user.email,
-        url: 'https://github.com/Falren'
+        url: 'https://cjav.dev'
       },
       capabilities: {
         card_payments: {
