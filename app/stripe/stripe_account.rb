@@ -138,20 +138,20 @@ class StripeAccount
         }
       }, header
     )
-    @account.update(financial_account_id: financial_account.id)
+    account.update(financial_account_id: financial_account.id)
   end
 
   def header
-    { stripe_account: @account.stripe_id }
+    { stripe_account: account.stripe_id }
   end
 
   def onboarding_url
     Stripe::AccountLink.create({
-                                 account: @account.stripe_id,
+                                 account: account.stripe_id,
                                  refresh_url: accounts_url,
                                  return_url: accounts_url,
                                  type: 'account_onboarding',
-                                 collect: 'eventually_due'
+                                 collect: 'eventually_due',
                                }).url
   end
 end
