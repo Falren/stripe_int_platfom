@@ -1,13 +1,12 @@
-<%= content_for :page_title do %> 
-  Accounts
-<% end %>
-<form action="/accounts"  method="post" data-turbo="false" class="mt-4">
-  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-  <button type="submit" class="inline-flex items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-    Create Stripe Account
+
+<% if current_user.account.nil? %>
+<form action="/accounts" method="POST" data-turbo="false" class="mt-4">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+    Create a Stripe Account
   </button>
 </form>
-
+<% else %>
 <div class="bg-white shadow overflow-hidden sm:rounded-lg mt-4">
   <div class="px-4 py-5 sm:px-6">
     <h3 class="text-lg leading-6 font-medium text-gray-900">Payment account information</h3>
@@ -26,6 +25,7 @@
       <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-gray-500">Payouts enabled?</dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= current_user.account.payouts_enabled? %></dd>
+
       </div>
       <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-gray-500">Financial Account ID</dt>
@@ -38,3 +38,4 @@
     </dl>
   </div>
 </div>
+<% end %>

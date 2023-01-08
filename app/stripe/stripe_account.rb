@@ -61,7 +61,7 @@ class StripeAccount
         product_description: 'Digital creation',
         mcc: '5818',
         support_email: account.user.email,
-        url: 'https://example.dev'
+        url: 'https://github.com/Falren'
       },
       capabilities: {
         card_payments: {
@@ -106,7 +106,6 @@ class StripeAccount
   end
 
   def financial_account
-    return @financial_account if defined? @financial_account
 
     @financial_account ||= Stripe::Treasury::FinancialAccount.retrieve(
       {
