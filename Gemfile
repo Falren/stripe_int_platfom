@@ -81,3 +81,5 @@ gem "pry", "~> 0.14.1"
 gem "image_processing", "~> 1.12"
 
 gem "aws-sdk-s3", "~> 1.117"
+
+gem "letter_opener", "~> 1.8", :group => :development

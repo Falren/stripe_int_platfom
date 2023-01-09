@@ -94,6 +94,8 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     aws-eventstream (1.2.0)
     aws-partitions (1.684.0)
     aws-sdk-core (3.168.4)
@@ -151,6 +153,10 @@ GEM
     jmespath (1.6.2)
     jsbundling-rails (1.0.3)
       railties (>= 6.0.0)
+    launchy (2.5.2)
+      addressable (~> 2.8)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -184,6 +190,7 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    public_suffix (5.0.1)
     puma (6.0.0)
       nio4r (~> 2.0)
     racc (1.6.1)
@@ -256,6 +263,7 @@ DEPENDENCIES
   image_processing (~> 1.12)
   jbuilder
   jsbundling-rails
+  letter_opener (~> 1.8)
   pg (~> 1.1)
   pry (~> 0.14.1)
   puma (>= 5.0)
